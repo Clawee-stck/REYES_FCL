@@ -1,0 +1,70 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  text-align: center;
+  padding: 50px;
+}
+h1 {
+  font-size: 26px; 
+  font-weight: bold; 
+  margin-top: 40px; 
+  text-align: center; 
+}
+p {
+  font-size: 20px; 
+  
+  text-align: center; 
+  margin-top: 10px; 
+  margin-bottom: 10px; 
+}
+.card {
+  background: linear-gradient(to bottom, #84772b 50%, rgb(47, 47, 139) 50%);
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-align: center;
+  width: 400px;
+  margin: auto;
+}
+
+.profile-img {
+  border: 4px solid #fff;
+  object-fit: cover; 
+    margin: 0 auto;
+    display: block;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  position: relative; 
+  top: 11px;
+
+}
+
+.title {
+  color: gray;
+  font-size: 18px;
+  position: relative; 
+  top: -10px; 
+}
+
+a {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+  color: white;
+  background-color: #84772bFF;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+.email-link {
+  text-decoration: underline; 
+  color: #007bff;
+  font-size: 11px;
+  cursor: pointer; 
+  transition: color 0.3s ease-in-out;
+  position: relative; 
+  top: -11px; 
+}
+.email-link {
+  color: #ffffff; 
+}

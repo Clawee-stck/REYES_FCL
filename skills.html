@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills - Jules Portfolio</title>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css' rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0a1f1c;
+            --secondary-dark: #1a2e2a;
+            --accent-green: #52b788;
+            --accent-light: #74c69d;
+            --text-primary: #ffffff;
+            --text-secondary: #b7e4c7;
+            --gradient-primary: linear-gradient(135deg, #52b788 0%, #74c69d 100%);
+            --gradient-card: linear-gradient(145deg, #1a2e2a 0%, #0f211e 100%);
+            --shadow-glow: 0 0 30px rgba(82, 183, 136, 0.3);
+            --shadow-subtle: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(82, 183, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(116, 198, 157, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(82, 183, 136, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 5%;
+            background: rgba(10, 31, 28, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(82, 183, 136, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            opacity: 0;
+            animation: slideRight 1s ease forwards;
+        }
+
+        .navbar {
+            display: flex;
+            gap: 40px;
+        }
+
+        .navbar a {
+            position: relative;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            opacity: 0;
+            animation: slideTop 0.6s ease forwards;
+            animation-delay: calc(0.1s * var(--i));
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+        }
+
+        .navbar a:hover,
+        .navbar a.active {
+            color: var(--text-primary);
+        }
+
+        .navbar a:hover::after,
+        .navbar a.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent-green);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 120px 5% 80px;
+            gap: 60px;
+        }
+
+        .skills-section {
+            flex: 1;
+            max-width: 800px;
+        }
+
+        .main-title {
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: slideBottom 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .skill-box {
+            background: var(--gradient-card);
+            border: 2px solid rgba(82, 183, 136, 0.2);
+            border-radius: var(--border-radius);
+            padding: 32px 24px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards;
+            animation-delay: calc(0.2s * var(--i));
+        }
+
+        .skill-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(82, 183, 136, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .skill-box:hover::before {
+            left: 100%;
+        }
+
+        .skill-box:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-green);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .skill-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .skill-box:hover .skill-icon {
+            transform: scale(1.1);
+        }
+
+        .skill-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .skill-level {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .skill-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(82, 183, 136, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .skill-progress-bar {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            transition: width 2s ease;
+            width: 0;
+        }
+
+        .skill-box:hover .skill-progress-bar {
+            width: var(--progress) !important;
+        }
+
+        .html-css .skill-icon { color: #e34c26; }
+        .cpp .skill-icon { color: #00599c; }
+        .python .skill-icon { color: #3776ab; }
+        .java .skill-icon { color: #ed8b00; }
+        .javascript .skill-icon { color: #f7df1e; }
+
+        .code-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .code-image::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(80px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .code-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: var(--shadow-subtle);
+            opacity: 0;
+            animation: zoomIn 1s ease forwards;
+            animation-delay: 1.2s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skills-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            opacity: 0;
+            animation: slideUp 1s ease forwards;
+            animation-delay: 1.4s;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(82, 183, 136, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(82, 183, 136, 0.1);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-green);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        @keyframes slideRight {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideTop {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideBottom {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 1024px) {
+            .home {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .skills-container {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 5%;
+            }
+
+            .navbar {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 31, 28, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 20px;
+                border-top: 1px solid rgba(82, 183, 136, 0.1);
+            }
+
+            .navbar.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .home {
+                padding: 100px 5% 60px;
+            }
+
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .home {
+                padding: 80px 5% 40px;
+            }
+
+            .skill-box {
+                padding: 24px 16px;
+            }
+
+            .skills-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--gradient-primary);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"></div>
+    
+    <header class="header">
+        <a href="index.html" class="logo">Made by F</a>
+        <nav class="navbar">
+            <a href="index.html" style="--i:1;">Home</a>
+            <a href="skills.html" style="--i:2;" class="active">Skills</a>
+            <a href="portfolio.html" style="--i:3;">Portfolio</a>
+            <a href="aboutme.html" style="--i:4;">About Me</a>
+            <a href="contact.html" style="--i:5;">Contact</a>
+        </nav>
+        <div class="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <section class="home">
+        <div class="skills-section">
+            <h1 class="main-title">My Skills</h1>
+            
+            <div class="skills-container">
+                <div class="skill-box html-css" style="--i:1; --progress:85%;">
+                    <i class="fab fa-html5 skill-icon"></i>
+                    <div class="skill-name">HTML & CSS</div>
+                    <div class="skill-level">Advanced</div>
+                    <div class="skill-progress">
+                        <div class="skill-progress-bar" style="width: 85%;"></div>
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-secondary);">
+                        Semantic markup, responsive design, CSS Grid & Flexbox
+                    </p>
+                </div>
+
+                <div class="skill-box cpp" style="--i:2; --progress:75%;">
+                    <i class="fab fa-cuttlefish skill-icon"></i>
+                    <div class="skill-name">C & C++</div>
+                    <div class="skill-level">Intermediate</div>
+                    <div class="skill-progress">
+                        <div class="skill-progress-bar" style="width: 75%;"></div>
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-secondary);">
+                        Object-oriented programming, data structures, algorithms
+                    </p>
+                </div>
+
+                <div class="skill-box python" style="--i:3; --progress:60%;">
+                    <i class="fab fa-python skill-icon"></i>
+                    <div class="skill-name">Python</div>
+                    <div class="skill-level">Beginner</div>
+                    <div class="skill-progress">
+                        <div class="skill-progress-bar" style="width: 60%;"></div>
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-secondary);">
+                        Basic syntax, automation scripts, data analysis basics
+                    </p>
+                </div>
+
+                <div class="skill-box java" style="--i:4; --progress:70%;">
+                    <i class="fab fa-java skill-icon"></i>
+                    <div class="skill-name">Java</div>
+                    <div class="skill-level">Intermediate</div>
+                    <div class="skill-progress">
+                        <div class="skill-progress-bar" style="width: 70%;"></div>
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-secondary);">
+                        OOP concepts, collections framework, basic GUI development
+                    </p>
+                </div>
+
+                <div class="skill-box javascript" style="--i:5; --progress:65%;">
+                    <i class="fab fa-js-square skill-icon"></i>
+                    <div class="skill-name">JavaScript</div>
+                    <div class="skill-level">Beginner+</div>
+                    <div class="skill-progress">
+                        <div class="skill-progress-bar" style="width: 65%;"></div>
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-secondary);">
+                        DOM manipulation, event handling, ES6+ features
+                    </p>
+                </div>
+            </div>
+
+            <div class="skills-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="5">0</span>
+                    <div class="stat-label">Programming Languages</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="15">0</span>
+                    <div class="stat-label">Projects Completed</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="2">0</span>
+                    <div class="stat-label">Years Learning</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="100">0</span>
+                    <div class="stat-label">Hours Coding</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-image">
+            <img src="code.png" alt="Programming Code Illustration">
+        </div>
+    </section>
+
+    <script>
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navbar = document.querySelector('.navbar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navbar.classList.toggle('active');
+        });
+
+        const scrollProgress = document.querySelector('.scroll-progress');
+        window.addEventListener('scroll', () => {
+            const winHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled_percent = (window.scrollY / winHeight) * 100;
+            scrollProgress.style.width = scrolled_percent + '%';
+        });
+
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBar = entry.target.querySelector('.skill-progress-bar');
+                    const progress = entry.target.style.getPropertyValue('--progress');
+                    if (progressBar && progress) {
+                        setTimeout(() => {
+                            progressBar.style.width = progress;
+                        }, 300);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.skill-box').forEach(box => {
+            observer.observe(box);
+        });
+
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start);
+                }
+            }, 16);
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.stat-number');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.dataset.target);
+                        animateCounter(counter, target);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.querySelector('.skills-stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        document.querySelectorAll('.skill-box').forEach(box => {
+            box.addEventListener('mouseenter', () => {
+                box.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            box.addEventListener('mouseleave', () => {
+                box.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

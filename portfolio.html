@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jules - Portfolio</title>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css' rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0a1f1c;
+            --secondary-dark: #1a2e2a;
+            --accent-green: #52b788;
+            --accent-light: #74c69d;
+            --text-primary: #ffffff;
+            --text-secondary: #b7e4c7;
+            --gradient-primary: linear-gradient(135deg, #52b788 0%, #74c69d 100%);
+            --gradient-card: linear-gradient(145deg, #1a2e2a 0%, #0f211e 100%);
+            --shadow-glow: 0 0 30px rgba(82, 183, 136, 0.3);
+            --shadow-subtle: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(82, 183, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(116, 198, 157, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(82, 183, 136, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 5%;
+            background: rgba(10, 31, 28, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(82, 183, 136, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            padding: 15px 5%;
+            background: rgba(10, 31, 28, 0.98);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar {
+            display: flex;
+            gap: 40px;
+        }
+
+        .navbar a {
+            position: relative;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+        }
+
+        .navbar a:hover,
+        .navbar a.active {
+            color: var(--text-primary);
+        }
+
+        .navbar a:hover::after,
+        .navbar a.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent-green);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .portfolio {
+            padding: 120px 5% 80px;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid rgba(82, 183, 136, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        .project-content {
+            padding: 25px;
+        }
+
+        .project-content h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .project-content p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            background: rgba(82, 183, 136, 0.1);
+            color: var(--accent-light);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--gradient-primary);
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .project-link.secondary {
+            background: transparent;
+            color: var(--accent-green);
+            border: 2px solid var(--accent-green);
+        }
+
+        .project-link.secondary:hover {
+            background: var(--accent-green);
+            color: var(--primary-dark);
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--gradient-primary);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-green);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-light);
+        }
+
+        @media (max-width: 1024px) {
+            .projects-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 5%;
+            }
+
+            .navbar {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 31, 28, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 20px;
+                border-top: 1px solid rgba(82, 183, 136, 0.1);
+            }
+
+            .navbar.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .mobile-menu-btn.active span:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 6px);
+            }
+
+            .mobile-menu-btn.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-btn.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -6px);
+            }
+
+            .portfolio {
+                padding: 100px 5% 60px;
+            }
+
+            .section-title h2 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio {
+                padding: 80px 5% 40px;
+            }
+
+            .projects-container {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 32px;
+            }
+
+            .section-title p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"></div>
+    
+    <header class="header">
+        <a href="index.html" class="logo">Made by F</a>
+        <nav class="navbar">
+            <a href="index.html" style="--i:1;">Home</a>
+            <a href="skills.html" style="--i:2;">Skills</a>
+            <a href="portfolio.html" style="--i:3;" class="active">Portfolio</a>
+            <a href="aboutme.html" style="--i:4;">About Me</a>
+            <a href="contact.html" style="--i:5;">Contact</a>
+        </nav>
+        <div class="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <section class="portfolio">
+        <div class="section-title">
+            <h2>My Projects</h2>
+            <p>Here are some of my recent web development projects. Each one represents a step in my learning journey.</p>
+        </div>
+
+        <div class="projects-container">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="f1.png" alt="Formula 1 Project">
+                </div>
+                <div class="project-content">
+                    <h3>Formula 1 (2025)</h3>
+                    <p>A dynamic website showcasing Formula 1 teams and drivers for the 2025 season. Features responsive design and interactive elements.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">HTML</span>
+                        <span class="tech-tag">CSS</span>
+                        <span class="tech-tag">JavaScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="Reyes_FA1/REYES/index.html" class="project-link">
+                            <i class='bx bx-link-external'></i> Live Demo
+                        </a>
+                        <a href="#" class="project-link secondary">
+                            <i class='bx bxl-github'></i> Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="reg.png" alt="Registration Form">
+                </div>
+                <div class="project-content">
+                    <h3>Registration Form</h3>
+                    <p>A clean, accessible registration form with validation. Demonstrates form design principles and user experience considerations.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">HTML</span>
+                        <span class="tech-tag">CSS</span>
+                        <span class="tech-tag">Form Validation</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="Reyes_FA2/REYES/index.html" class="project-link">
+                            <i class='bx bx-link-external'></i> Live Demo
+                        </a>
+                        <a href="#" class="project-link secondary">
+                            <i class='bx bxl-github'></i> Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 - Placeholder for future project -->
+           <div class="project-card">
+                <div class="project-image">
+                    <img src="PC.png" alt="Profile Card Project">
+                </div>
+                <div class="project-content">
+                    <h3>Profile Card Project</h3>
+                    <p>A dynamic website showcasing Formula 1 teams and drivers for the 2025 season. Features responsive design and interactive elements.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">HTML</span>
+                        <span class="tech-tag">CSS</span>
+                     
+                    </div>
+                    <div class="project-links">
+                        <a href="REYES_MA5/Profile Card/act5.html" class="project-link">
+                            <i class='bx bx-link-external'></i> Live Demo
+                        </a>
+                        <a href="#" class="project-link secondary">
+                            <i class='bx bxl-github'></i> Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navbar = document.querySelector('.navbar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navbar.classList.toggle('active');
+        });
+
+        const header = document.querySelector('.header');
+        const scrollProgress = document.querySelector('.scroll-progress');
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            
+            if (scrolled > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            const winHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled_percent = (scrolled / winHeight) * 100;
+            scrollProgress.style.width = scrolled_percent + '%';
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            const projectCards = document.querySelectorAll('.project-card');
+            projectCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.5s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 200 * (index + 1));
+            });
+        });
+    </script>
+</body>
+</html>
